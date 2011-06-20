@@ -1,4 +1,5 @@
 from django.contrib import admin
+from treebeard.admin import TreeAdmin
 
 from oscar.core.loading import import_module
 product_models = import_module('product.models', ['Item', 'ItemClass', 'AttributeType', 'AttributeValueOption',
@@ -30,11 +31,14 @@ class AttributeTypeAdmin(admin.ModelAdmin):
 class OptionAdmin(admin.ModelAdmin):
     exclude = ['code']
 
+class CategoryAdmin(TreeAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+
 admin.site.register(product_models.ItemClass, ItemClassAdmin)
 admin.site.register(product_models.Item, ItemAdmin)
 admin.site.register(product_models.AttributeType, AttributeTypeAdmin)
 admin.site.register(product_models.ItemAttributeValue)
 admin.site.register(product_models.Option, OptionAdmin)
 admin.site.register(product_models.ProductImage)
-admin.site.register(product_models.Category)
+admin.site.register(product_models.Category, CategoryAdmin)
 admin.site.register(product_models.AttributeValueOption)
